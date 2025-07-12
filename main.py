@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from db import collection
 from bson import ObjectId  # Import ObjectId from bson
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -17,10 +18,12 @@ def item_to_dict(item):
 
 @app.post("/items/")
 async def create_item(item: Item):
-    item_dict = item.dict()
-    result = collection.insert_one(item_dict)
-    # Optionally, you can return the inserted ID
-    return {"message": "Item added successfully", "item_id": str(result.inserted_id)}
+    try:
+        item_dict = item.dict()
+        result = collection.insert_one(item_dict)
+        return {"message": "Item added successfully", "item_id": str(result.inserted_id)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 @app.get("/items/{name}")
 async def get_item(name: str):
