@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get MongoDB URI from environment variable
-MONGO_URI = os.getenv("MONGO_URI")  # Default to localhost if not set
+MONGO_URI = os.getenv("mongodb+srv://hamid42:5wmsu65GhQOkUcea@test-db.apjrc6g.mongodb.net/?retryWrites=true&w=majority&appName=test-db")  # Default to localhost if not set
 
 client = MongoClient(MONGO_URI)
 db = client["test-db"]  # Your database name
